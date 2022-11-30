@@ -13,4 +13,14 @@ public class DrivingLicenceTest {
 
         Assertions.assertEquals(given.getAvailablePoints()-2, actual.getAvailablePoints());
     }
+
+    @Test
+    void should_be_remove_points_to_zero()
+    {
+        final var socialSecurityNumber = SocialSecurityNumber.builder().number("123456789123456").build();
+        var given = DrivingLicence.builder().driverSocialSecurityNumber(socialSecurityNumber).build();
+        var actual = given.removePoint(13);
+
+        Assertions.assertEquals(0, actual.getAvailablePoints());
+    }
 }

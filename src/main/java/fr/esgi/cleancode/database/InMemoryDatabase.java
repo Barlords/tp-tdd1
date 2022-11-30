@@ -16,7 +16,7 @@ public final class InMemoryDatabase {
 
     public static synchronized InMemoryDatabase getInstance() {
         if (INSTANCE == null) {
-            return new InMemoryDatabase();
+            INSTANCE = new InMemoryDatabase();
         }
         return INSTANCE;
     }
