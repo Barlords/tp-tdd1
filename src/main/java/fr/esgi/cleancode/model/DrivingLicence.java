@@ -11,9 +11,14 @@ import java.util.UUID;
 @Builder
 public class DrivingLicence {
     UUID id;
-    String driverSocialSecurityNumber;
+    SocialSecurityNumber driverSocialSecurityNumber;
 
     @With
     @Default
     int availablePoints = 12;
+
+    public DrivingLicence removePoint(int nbPointToRemove) {
+        var newPoint = Math.max(availablePoints - nbPointToRemove, 0);
+        return this.withAvailablePoints(newPoint);
+    }
 }
