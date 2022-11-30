@@ -9,12 +9,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DrivingLicenceCreatorService {
 
+    private final DrivingLicenceIdGenerationService drivingLicenceIdGenerationService;
+
     private final InMemoryDatabase database;
 
     public DrivingLicence create(String ssn) {
         verifySSSNValidity(ssn);
         var drivingLicence = buildDrivingLicence(ssn);
-        return database.save(drivingLicence.getId(), drivingLicence);
+        return saveLicence(drivingLicence);
     }
 
     private void verifySSSNValidity(String ssn) {
@@ -25,10 +27,15 @@ public class DrivingLicenceCreatorService {
 
     private DrivingLicence buildDrivingLicence(String ssn) {
         return DrivingLicence.builder()
+                .id(drivingLicenceIdGenerationService.generateNewDrivingLicenceId())
                 .driverSocialSecurityNumber(SocialSecurityNumber.builder()
                         .number(ssn)
                         .build())
                 .build();
+    }
+
+    private DrivingLicence saveLicence(DrivingLicence drivingLicence) {
+        return database.save(drivingLicence.getId(), drivingLicence);
     }
 
 }
